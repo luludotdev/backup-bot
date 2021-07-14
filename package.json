@@ -14,14 +14,16 @@
     "predev": "yarn run clean",
     "debug": "nodemon --watch build --inspect",
     "build": "yarn run compile",
-    "prebuild": "yarn run clean"
+    "prebuild": "yarn run clean",
+    "lint": "xo ./src"
   },
   "devDependencies": {
     "@types/node": "^16.3.2",
     "@types/source-map-support": "^0.5.4",
     "nodemon": "^2.0.12",
     "rimraf": "^3.0.2",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "xo": "^0.39.1"
   },
   "dependencies": {
     "source-map-support": "^0.5.19",
