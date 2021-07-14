@@ -1,6 +1,7 @@
 {
   "name": "backup-bot",
   "version": "0.1.0",
+  "type": "module",
   "main": "./build/index.js",
   "repository": "git@github.com:lolPants/backup-bot.git",
   "author": "Jack Baron <jackmbaron@gmail.com>",
