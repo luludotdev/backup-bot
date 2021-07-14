@@ -26,6 +26,7 @@
     "xo": "^0.39.1"
   },
   "dependencies": {
+    "@lolpants/jogger": "^0.5.0",
     "dotenv": "^10.0.0",
     "source-map-support": "^0.5.19",
     "tslib": "^2.3.0"
