@@ -1,5 +1,6 @@
 import {
   createConsoleSink,
+  createField,
   createFileSink,
   createLogger,
   field,
@@ -19,6 +20,7 @@ export const logger = createLogger({
   sink: [consoleSink, fileSink],
 })
 
+export const ctxField = createField('context')
 export const errorField: <T extends Error>(error: T) => Readonly<IField> =
   error => {
     const array: Array<Readonly<IField>> = [
