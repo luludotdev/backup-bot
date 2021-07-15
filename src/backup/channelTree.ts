@@ -7,62 +7,58 @@ import type {
   Role,
 } from 'discord.js'
 
-export const backupGuild: (guild: Guild) => Promise<void> = async guild => {
-  const tree = await resolveChannelTree(guild)
-  const treeJSON = JSON.stringify(tree, null, 2)
-}
+export const resolveChannelTree: (
+  guild: Guild
+) => Promise<Readonly<ChannelTree>> = async guild => {
+  const rootID = '#root'
+  const tree: ChannelTree = [
+    {
+      id: rootID,
+      name: rootID,
+      channels: [],
+      permissions: null,
+    },
+  ]
 
-const resolveChannelTree: (guild: Guild) => Promise<Readonly<ChannelTree>> =
-  async guild => {
-    const rootID = '#root'
-    const tree: ChannelTree = [
-      {
-        id: rootID,
-        name: rootID,
-        channels: [],
-        permissions: null,
-      },
-    ]
+  const channels = [...guild.channels.cache.values()].sort(
+    (a, b) => a.position - b.position
+  )
 
-    const channels = [...guild.channels.cache.values()].sort(
-      (a, b) => a.position - b.position
-    )
-
-    /* eslint-disable no-await-in-loop */
-    for (const channel of channels.filter(x => x.type === 'category')) {
-      tree.push({
-        id: channel.id,
-        name: channel.name,
-        channels: [],
-        permissions: await mapPermissions(channel.permissionOverwrites),
-      })
-    }
-    /* eslint-enable no-await-in-loop */
-
-    /* eslint-disable no-await-in-loop */
-    for (const channel of channels.filter(x => x.type !== 'category')) {
-      const parentID = channel.parentID ?? rootID
-      const parent = tree.find(x => x.id === parentID)
-      if (!parent) {
-        throw new Error(
-          `failed to find parent of #${channel.name} (${channel.id})`
-        )
-      }
-
-      parent.channels.push({
-        id: channel.id,
-        name: channel.name,
-        // @ts-expect-error
-        type: channel.type,
-        // @ts-expect-error
-        topic: channel.topic ?? null,
-        permissions: await mapPermissions(channel.permissionOverwrites),
-      })
-    }
-    /* eslint-enable no-await-in-loop */
-
-    return tree
+  /* eslint-disable no-await-in-loop */
+  for (const channel of channels.filter(x => x.type === 'category')) {
+    tree.push({
+      id: channel.id,
+      name: channel.name,
+      channels: [],
+      permissions: await mapPermissions(channel.permissionOverwrites),
+    })
   }
+  /* eslint-enable no-await-in-loop */
+
+  /* eslint-disable no-await-in-loop */
+  for (const channel of channels.filter(x => x.type !== 'category')) {
+    const parentID = channel.parentID ?? rootID
+    const parent = tree.find(x => x.id === parentID)
+    if (!parent) {
+      throw new Error(
+        `failed to find parent of #${channel.name} (${channel.id})`
+      )
+    }
+
+    parent.channels.push({
+      id: channel.id,
+      name: channel.name,
+      // @ts-expect-error
+      type: channel.type,
+      // @ts-expect-error
+      topic: channel.topic ?? null,
+      permissions: await mapPermissions(channel.permissionOverwrites),
+    })
+  }
+  /* eslint-enable no-await-in-loop */
+
+  return tree
+}
 
 const mapPermissions: (
   overrides: GuildChannel['permissionOverwrites']
