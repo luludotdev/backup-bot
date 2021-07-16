@@ -1,6 +1,7 @@
 import type {
   Guild,
   Message,
+  MessageAttachment,
   MessageFlagsString,
   TextChannel,
 } from 'discord.js'
@@ -43,9 +44,19 @@ const mapMessage: (message: Message) => MessageBackup = message => ({
   editedAt: message.editedTimestamp === 0 ? null : message.editedTimestamp,
   content: message.content,
   embeds: message.embeds,
+  attachments: mapAttachments(message.attachments),
   flags: message.flags.toArray(),
   pinned: message.pinned,
 })
+
+const mapAttachments: (
+  attachments: Message['attachments']
+) => MessageAttachmentBackup[] = attachments =>
+  attachments.map(asset => ({
+    id: asset.id,
+    name: asset.name,
+    url: asset.url,
+  }))
 
 type ContentBackup = Map<string, ChannelBackup>
 
@@ -66,7 +77,14 @@ interface MessageBackup {
 
   content: Message['content']
   embeds: Message['embeds']
+  attachments: MessageAttachmentBackup[]
   flags: MessageFlagsString[]
 
   pinned: Message['pinned']
+}
+
+interface MessageAttachmentBackup {
+  id: MessageAttachment['id']
+  name: MessageAttachment['name']
+  url: MessageAttachment['url']
 }
