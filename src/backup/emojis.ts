@@ -1,10 +1,25 @@
 import type { Emoji, Guild } from 'discord.js'
+import { parse } from 'node:path'
 
 export const downloadGuildEmoji: (guild: Guild) => Promise<EmojiInfo> =
   async guild => {
+    const info: EmojiBackup[] = []
     const map: EmojiFiles = new Map()
 
-    // TODO: Download and save all the emoji lol
+    for (const emoji of guild.emojis.cache.values()) {
+      info.push({
+        id: emoji.id,
+        name: emoji.name,
+        identifier: emoji.identifier,
+        animated: emoji.animated,
+      })
+
+      const { ext } = parse(emoji.url)
+      const filename = `${emoji.name}.${emoji.id}${ext}`
+
+      // TODO: Download emoji
+      map.set(filename, Buffer.from([]))
+    }
 
     return [[], map]
   }
@@ -15,6 +30,7 @@ interface EmojiBackup {
   id: Emoji['id']
   name: Emoji['name']
   identifier: Emoji['identifier']
+  animated: Emoji['animated']
 }
 
 type EmojiInfo = [info: EmojiBackup[], files: EmojiFiles]
