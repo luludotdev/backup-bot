@@ -9,13 +9,19 @@ export const channelContent: (guild: Guild) => Promise<ContentBackup> =
   async guild => {
     const map: ContentBackup = new Map()
 
+    /* eslint-disable no-await-in-loop */
     for (const channel of guild.channels.cache.values()) {
       if (!channel.isText()) continue
       if (!channel.viewable) continue
 
+      const messages = await channel.messages.fetch({ limit: 100 })
+      if (messages.size === 0) continue
+      if (messages.size > 95) continue
+
       // TODO: Backup Messages
       map.set(`#${channel.id}@${channel.name}`, [])
     }
+    /* eslint-enable no-await-in-loop */
 
     return map
   }
