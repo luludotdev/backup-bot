@@ -10,16 +10,20 @@ export const resolveRoleList: (guild: Guild) => Promise<readonly RoleBackup[]> =
     )
 
     for (const role of sorted) {
-      const members: RoleMemberBackup[] = role.members.map(member => ({
-        id: member.id,
-        tag: member.user.tag,
-      }))
+      const resolveMembers = () => {
+        if (role.id === guild.id) return []
+
+        return role.members.map(member => ({
+          id: member.id,
+          tag: member.user.tag,
+        }))
+      }
 
       array.push({
         id: role.id,
         name: role.name,
         permissions: role.permissions.toArray(),
-        members,
+        members: resolveMembers(),
         color: role.color === 0 ? null : role.hexColor,
         hoisted: role.hoist,
         mentionable: role.mentionable,
