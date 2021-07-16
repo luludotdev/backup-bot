@@ -14,6 +14,8 @@ client.on('ready', async () => {
     field('action', 'ready'),
     field('user', client.user?.tag ?? 'Unknown')
   )
+
+  process.exit(0)
 })
 
 exitHook(async (exit, error) => {
