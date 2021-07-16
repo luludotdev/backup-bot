@@ -9,4 +9,5 @@ export const IS_DEV = !IS_PROD
 // #region Bot
 export const TOKEN = registerString('TOKEN', true)
 export const GUILD_ID = registerString('GUILD_ID', true)
+export const BACKUPS_DIR = registerString('BACKUPS_DIR') ?? './backups'
 // #endregion

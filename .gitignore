@@ -4,4 +4,4 @@ build
 logs
 !*.env.example
 *.env
-*.zip
+backups
