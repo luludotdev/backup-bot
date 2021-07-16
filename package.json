@@ -18,6 +18,7 @@
     "lint": "xo ./src"
   },
   "devDependencies": {
+    "@types/dateformat": "^3.0.1",
     "@types/node": "^16.3.2",
     "@types/source-map-support": "^0.5.4",
     "nodemon": "^2.0.12",
@@ -27,6 +28,7 @@
   },
   "dependencies": {
     "@lolpants/jogger": "^0.5.0",
+    "dateformat": "^4.5.1",
     "discord.js": "^12.5.3",
     "dotenv": "^10.0.0",
     "jszip": "^3.6.0",

@@ -1,5 +1,7 @@
 import { field } from '@lolpants/jogger'
+import dateformat from 'dateformat'
 import { Client } from 'discord.js'
+import { writeFile } from 'node:fs/promises'
 import sourceMapSupport from 'source-map-support'
 import { backupGuild } from './backup/index.js'
 import { GUILD_ID, TOKEN } from './env/index.js'
@@ -38,6 +40,16 @@ client.on('ready', async () => {
 
   const guild = await resolveGuild()
   const buffer = await backupGuild(guild)
+
+  const timestamp = dateformat('yyyymmddHHMMss')
+  const filepath = `./${timestamp}.${guild.id}.zip`
+  await writeFile(filepath, buffer)
+
+  logger.info(
+    field('event', 'write-zip'),
+    field('path', filepath),
+    field('filesize', buffer.length)
+  )
 
   process.exit(0)
 })
