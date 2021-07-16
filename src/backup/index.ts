@@ -4,6 +4,7 @@ import JSZip from 'jszip'
 import { ctxField, logger } from '../logger.js'
 import { channelContent } from './channelContent.js'
 import { resolveChannelTree } from './channelTree.js'
+import { downloadGuildEmoji } from './emojis.js'
 import { resolveGuildInfo } from './guildInfo.js'
 import { resolveRoleList } from './roles.js'
 
@@ -27,6 +28,13 @@ export const backupGuild: (guild: Guild) => Promise<Buffer> = async guild => {
   const channelBackups = await channelContent(guild)
   for (const [path, backup] of channelBackups.entries()) {
     zip.file(`channels/${path}.json`, JSON.stringify(backup, null, 2))
+  }
+
+  logger.debug(ctx, field('message', 'backing up guild emoji...'))
+  const [emoji, emojiFiles] = await downloadGuildEmoji(guild)
+  zip.file('emoji.json', JSON.stringify(emoji, null, 2))
+  for (const [filename, data] of emojiFiles.entries()) {
+    zip.file(`emoji/${filename}`, data)
   }
 
   logger.debug(ctx, field('message', 'generating zip buffer...'))
