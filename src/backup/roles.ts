@@ -13,6 +13,7 @@ export const resolveRoleList: (guild: Guild) => Promise<readonly RoleBackup[]> =
       const resolveMembers = () => {
         if (role.id === guild.id) return []
 
+        // TODO: Find more reliable method of fetching role members
         return role.members.map(member => ({
           id: member.id,
           tag: member.user.tag,
