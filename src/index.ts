@@ -22,7 +22,7 @@ client.on('ready', async () => {
 
   const resolveGuild = async () => {
     try {
-      const guild = await client.guilds.fetch(GUILD_ID)
+      const guild = await client.guilds.fetch(GUILD_ID, true, true)
       logger.info(
         field('event', 'resolve-guild'),
         field('guild-id', guild.id),

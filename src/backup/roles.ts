@@ -2,7 +2,7 @@ import type { Guild, GuildMember, PermissionString, Role } from 'discord.js'
 
 export const resolveRoleList: (guild: Guild) => Promise<readonly RoleBackup[]> =
   async guild => {
-    const roles = await guild.roles.fetch()
+    const roles = await guild.roles.fetch(undefined, true, true)
     const array: RoleBackup[] = []
 
     const sorted = [...roles.cache.values()].sort(

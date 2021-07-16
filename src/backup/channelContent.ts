@@ -15,7 +15,7 @@ export const channelContent: (guild: Guild) => Promise<ContentBackup> =
       if (!channel.isText()) continue
       if (!channel.viewable) continue
 
-      const messages = await channel.messages.fetch({ limit: 100 })
+      const messages = await channel.messages.fetch({ limit: 100 }, true, true)
       if (messages.size === 0) continue
       if (messages.size > 95) continue
 
