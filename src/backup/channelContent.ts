@@ -1,8 +1,24 @@
-import type { Message, MessageFlagsString, TextChannel } from 'discord.js'
+import type {
+  Guild,
+  Message,
+  MessageFlagsString,
+  TextChannel,
+} from 'discord.js'
 
-export const channelContent: () => Promise<ContentBackup> = async () => {
-  // TODO
-}
+export const channelContent: (guild: Guild) => Promise<ContentBackup> =
+  async guild => {
+    const map: ContentBackup = new Map()
+
+    for (const channel of guild.channels.cache.values()) {
+      if (!channel.isText()) continue
+      if (!channel.viewable) continue
+
+      // TODO: Backup Messages
+      map.set(`#${channel.id}@${channel.name}`, [])
+    }
+
+    return map
+  }
 
 type ContentBackup = Map<string, ChannelBackup[]>
 

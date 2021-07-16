@@ -8,7 +8,7 @@ import { errorField, flush, logger } from './logger.js'
 // Enable Source Maps
 sourceMapSupport.install()
 
-const client = new Client({ partials: ['CHANNEL', 'MESSAGE', 'USER'] })
+const client = new Client()
 client.on('ready', async () => {
   logger.info(
     field('action', 'ready'),
