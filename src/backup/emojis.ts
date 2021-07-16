@@ -1,3 +1,4 @@
+import axios from 'axios'
 import type { Emoji, Guild } from 'discord.js'
 import { parse } from 'node:path'
 
@@ -6,6 +7,7 @@ export const downloadGuildEmoji: (guild: Guild) => Promise<EmojiInfo> =
     const info: EmojiBackup[] = []
     const map: EmojiFiles = new Map()
 
+    /* eslint-disable no-await-in-loop */
     for (const emoji of guild.emojis.cache.values()) {
       info.push({
         id: emoji.id,
@@ -17,9 +19,13 @@ export const downloadGuildEmoji: (guild: Guild) => Promise<EmojiInfo> =
       const { ext } = parse(emoji.url)
       const filename = `${emoji.name}.${emoji.id}${ext}`
 
-      // TODO: Download emoji
-      map.set(filename, Buffer.from([]))
+      const resp = await axios.get<Buffer>(emoji.url, {
+        responseType: 'arraybuffer',
+      })
+
+      map.set(filename, Buffer.from(resp.data))
     }
+    /* eslint-enable no-await-in-loop */
 
     return [[], map]
   }
