@@ -18,15 +18,36 @@ export const channelContent: (guild: Guild) => Promise<ContentBackup> =
       if (messages.size === 0) continue
       if (messages.size > 95) continue
 
-      // TODO: Backup Messages
-      map.set(`#${channel.id}@${channel.name}`, [])
+      const mapped = messages
+        .map(m => mapMessage(m))
+        .sort((a, b) => a.createdAt - b.createdAt)
+
+      const backup: ChannelBackup = {
+        id: channel.id,
+        name: channel.name,
+        messages: mapped,
+      }
+
+      map.set(`#${channel.id}@${channel.name}`, backup)
     }
     /* eslint-enable no-await-in-loop */
 
     return map
   }
 
-type ContentBackup = Map<string, ChannelBackup[]>
+const mapMessage: (message: Message) => MessageBackup = message => ({
+  id: message.id,
+  authorID: message.author.id,
+  authorTag: message.author.tag,
+  createdAt: message.createdTimestamp,
+  editedAt: message.editedTimestamp === 0 ? null : message.editedTimestamp,
+  content: message.content,
+  embeds: message.embeds,
+  flags: message.flags.toArray(),
+  pinned: message.pinned,
+})
+
+type ContentBackup = Map<string, ChannelBackup>
 
 interface ChannelBackup {
   id: TextChannel['id']
