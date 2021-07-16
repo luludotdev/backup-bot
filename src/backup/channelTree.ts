@@ -5,6 +5,7 @@ import type {
   PermissionOverwrites,
   PermissionString,
   Role,
+  TextChannel,
 } from 'discord.js'
 
 export const resolveChannelTree: (
@@ -45,6 +46,10 @@ export const resolveChannelTree: (
       )
     }
 
+    type Slowmode = TextChannel['rateLimitPerUser'] | null
+    // @ts-expect-error
+    const slowmode: Slowmode = channel.rateLimitPerUser ?? null
+
     parent.channels.push({
       id: channel.id,
       name: channel.name,
@@ -52,6 +57,9 @@ export const resolveChannelTree: (
       type: channel.type,
       // @ts-expect-error
       topic: channel.topic ?? null,
+      // @ts-expect-error
+      nsfw: channel.nsfw ?? false,
+      slowmode: slowmode === 0 ? null : slowmode,
       permissions: await mapPermissions(channel.permissionOverwrites),
     })
   }
@@ -121,6 +129,8 @@ interface ChannelBackup {
   name: GuildChannel['name']
   type: Exclude<GuildChannel['type'], 'category'>
   topic: string | null
+  nsfw: TextChannel['nsfw']
+  slowmode: TextChannel['rateLimitPerUser'] | null
   permissions: PermissionOverwriteBackup[] | null
 }
 
