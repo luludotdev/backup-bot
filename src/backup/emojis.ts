@@ -27,7 +27,7 @@ export const downloadGuildEmoji: (guild: Guild) => Promise<EmojiInfo> =
     }
     /* eslint-enable no-await-in-loop */
 
-    return [[], map]
+    return [info, map]
   }
 
 type EmojiFiles = Map<string, Buffer>
