@@ -12,7 +12,7 @@ export const downloadGuildEmoji: (guild: Guild) => Promise<EmojiInfo> =
       info.push({
         id: emoji.id,
         name: emoji.name,
-        identifier: emoji.identifier,
+        identifier: `<${emoji.animated ? 'a' : ''}:${emoji.identifier}>`,
         animated: emoji.animated,
       })
 
