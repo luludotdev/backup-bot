@@ -6,7 +6,7 @@ import {
   field,
 } from '@lolpants/jogger'
 import type { IField } from '@lolpants/jogger'
-import { IS_DEV } from './env/index.js'
+import { IS_DEV } from '~env/index.js'
 
 const consoleSink = createConsoleSink(IS_DEV)
 const fileSink = createFileSink({

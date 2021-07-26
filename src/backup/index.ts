@@ -1,12 +1,12 @@
 import { field } from '@lolpants/jogger'
 import type { Guild } from 'discord.js'
 import JSZip from 'jszip'
-import { ctxField, logger } from '../logger.js'
-import { channelContent } from './channelContent.js'
-import { resolveChannelTree } from './channelTree.js'
-import { downloadGuildEmoji } from './emojis.js'
-import { resolveGuildInfo } from './guildInfo.js'
-import { resolveRoleList } from './roles.js'
+import { channelContent } from '~backup/channelContent.js'
+import { resolveChannelTree } from '~backup/channelTree.js'
+import { downloadGuildEmoji } from '~backup/emojis.js'
+import { resolveGuildInfo } from '~backup/guildInfo.js'
+import { resolveRoleList } from '~backup/roles.js'
+import { ctxField, logger } from '~logger.js'
 
 const ctx = ctxField('backup')
 export const backupGuild: (guild: Guild) => Promise<Buffer> = async guild => {

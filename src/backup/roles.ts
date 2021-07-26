@@ -1,5 +1,5 @@
 import type { Guild, GuildMember, PermissionString, Role } from 'discord.js'
-import { MAX_ROLE_MEMBERS } from '../env/index.js'
+import { MAX_ROLE_MEMBERS } from '~env/index.js'
 
 export const resolveRoleList: (guild: Guild) => Promise<readonly RoleBackup[]> =
   async guild => {

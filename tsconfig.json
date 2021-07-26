@@ -14,7 +14,14 @@
     "outDir": "./build",
     "rootDir": "./src",
     "sourceMap": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "baseUrl": "./src",
+    "paths": {
+      "~backup/*": ["backup/*"],
+      "~env/*": ["env/*"],
+      "~logger.js": ["logger.js"]
+    },
+    "plugins": [{ "transform": "typescript-transform-paths" }]
   },
   "include": [
     "src/**/*.ts"

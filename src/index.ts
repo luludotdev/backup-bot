@@ -5,10 +5,10 @@ import mkdirp from 'mkdirp'
 import { writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import sourceMapSupport from 'source-map-support'
-import { backupGuild } from './backup/index.js'
-import { BACKUPS_DIR, GUILD_ID, TOKEN } from './env/index.js'
+import { backupGuild } from '~backup/index.js'
+import { BACKUPS_DIR, GUILD_ID, TOKEN } from '~env/index.js'
+import { errorField, flush, logger } from '~logger.js'
 import { exitHook } from './exit.js'
-import { errorField, flush, logger } from './logger.js'
 
 // Enable Source Maps
 sourceMapSupport.install()
