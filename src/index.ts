@@ -40,7 +40,13 @@ client.on('ready', async () => {
     }
   }
 
+  // Resolve Discord Guild
   const guild = await resolveGuild()
+
+  const members = await guild.members.fetch({ limit: 500_000 })
+  logger.info(field('event', 'sync-members'), field('members', members.size))
+
+  // Generate zip
   const buffer = await backupGuild(guild)
 
   const timestamp = dateformat('yyyymmddHHMMss')
