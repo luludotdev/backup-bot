@@ -39,8 +39,11 @@ export const backupGuild: (guild: Guild) => Promise<Buffer> = async guild => {
 
   logger.debug(ctx, field('message', 'generating zip buffer...'))
   const buffer = await zip.generateAsync({
-    compression: 'DEFLATE',
     type: 'nodebuffer',
+    compression: 'DEFLATE',
+    compressionOptions: {
+      level: 9,
+    },
   })
 
   return buffer
