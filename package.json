@@ -37,5 +37,11 @@
     "mkdirp": "^1.0.4",
     "source-map-support": "^0.5.19",
     "tslib": "^2.3.0"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.3",
+    "erlpack": "discord/erlpack",
+    "utf-8-validate": "^5.0.5",
+    "zlib-sync": "^0.1.7"
   }
 }
