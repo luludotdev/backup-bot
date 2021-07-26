@@ -1,3 +1,4 @@
+import { NewsChannel, StoreChannel, TextChannel } from 'discord.js'
 import type {
   Guild,
   GuildChannel,
@@ -5,7 +6,7 @@ import type {
   PermissionOverwrites,
   PermissionString,
   Role,
-  TextChannel,
+  VoiceChannel,
 } from 'discord.js'
 
 export const resolveChannelTree: (
@@ -36,8 +37,13 @@ export const resolveChannelTree: (
   }
   /* eslint-enable no-await-in-loop */
 
+  type NotCategory = TextChannel | StoreChannel | NewsChannel | VoiceChannel
+  const notCategories = channels.filter(
+    (channel): channel is NotCategory => channel.type !== 'category'
+  )
+
   /* eslint-disable no-await-in-loop */
-  for (const channel of channels.filter(x => x.type !== 'category')) {
+  for (const channel of notCategories) {
     const parentID = channel.parentID ?? rootID
     const parent = tree.find(x => x.id === parentID)
     if (!parent) {
@@ -47,18 +53,27 @@ export const resolveChannelTree: (
     }
 
     type Slowmode = TextChannel['rateLimitPerUser'] | null
-    // @ts-expect-error
-    const slowmode: Slowmode = channel.rateLimitPerUser ?? null
+    const slowmode: Slowmode =
+      channel instanceof TextChannel ? channel.rateLimitPerUser : null
+
+    const topic =
+      channel instanceof TextChannel || channel instanceof NewsChannel
+        ? channel.topic
+        : null
+
+    const nsfw =
+      channel instanceof TextChannel ||
+      channel instanceof NewsChannel ||
+      channel instanceof StoreChannel
+        ? channel.nsfw
+        : false
 
     parent.channels.push({
       id: channel.id,
       name: channel.name,
-      // @ts-expect-error
       type: channel.type,
-      // @ts-expect-error
-      topic: channel.topic ?? null,
-      // @ts-expect-error
-      nsfw: channel.nsfw ?? false,
+      topic,
+      nsfw,
       slowmode: slowmode === 0 ? null : slowmode,
       permissions: await mapPermissions(channel.permissionOverwrites),
     })
