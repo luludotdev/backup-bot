@@ -1,4 +1,3 @@
-/* eslint-disable no-redeclare */
 import { config } from 'dotenv'
 
 // Load from .env
