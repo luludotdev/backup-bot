@@ -1,4 +1,4 @@
-import { registerString } from './register.js'
+import { registerInt, registerString } from './register.js'
 
 // #region Globals
 const NODE_ENV = registerString('NODE_ENV')
@@ -10,4 +10,5 @@ export const IS_DEV = !IS_PROD
 export const TOKEN = registerString('TOKEN', true)
 export const GUILD_ID = registerString('GUILD_ID', true)
 export const BACKUPS_DIR = registerString('BACKUPS_DIR') ?? './backups'
+export const MAX_ROLE_MEMBERS = registerInt('MAX_ROLE_MEMBERS') ?? 500
 // #endregion
