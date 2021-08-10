@@ -7,6 +7,9 @@
   "author": "Jack Baron <jackmbaron@gmail.com>",
   "license": "MIT",
   "private": true,
+  "engines": {
+    "node": ">=16.6.0"
+  },
   "scripts": {
     "clean": "rimraf build",
     "compile": "ttsc",
