@@ -21,7 +21,6 @@
     "@types/dateformat": "^3.0.1",
     "@types/mkdirp": "^1.0.2",
     "@types/node": "^16.4.13",
-    "@types/source-map-support": "^0.5.4",
     "nodemon": "^2.0.12",
     "rimraf": "^3.0.2",
     "ttypescript": "^1.5.12",

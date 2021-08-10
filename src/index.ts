@@ -1,17 +1,15 @@
+import 'source-map-support/register.js'
+
 import { field } from '@lolpants/jogger'
 import dateformat from 'dateformat'
 import { Client } from 'discord.js'
 import mkdirp from 'mkdirp'
 import { writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
-import sourceMapSupport from 'source-map-support'
 import { backupGuild } from '~backup/index.js'
 import { BACKUPS_DIR, GUILD_ID, TOKEN } from '~env/index.js'
 import { errorField, flush, logger } from '~logger.js'
 import { exitHook } from './exit.js'
-
-// Enable Source Maps
-sourceMapSupport.install()
 
 const client = new Client()
 client.on('ready', async () => {
