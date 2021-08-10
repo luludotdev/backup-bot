@@ -1,5 +1,6 @@
 import axios from 'axios'
 import type { Emoji, Guild } from 'discord.js'
+import { Buffer } from 'node:buffer'
 import { parse } from 'node:path'
 
 export const downloadGuildEmoji: (guild: Guild) => Promise<EmojiInfo> =
@@ -17,7 +18,9 @@ export const downloadGuildEmoji: (guild: Guild) => Promise<EmojiInfo> =
       })
 
       const { ext } = parse(emoji.url)
-      const filename = `${emoji.name}.${emoji.id}${ext}`
+      const filename = emoji.name
+        ? `${emoji.name}.${emoji.id}${ext}`
+        : `${emoji.id}${ext}`
 
       const resp = await axios.get<Buffer>(emoji.url, {
         responseType: 'arraybuffer',

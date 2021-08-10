@@ -1,4 +1,5 @@
 import { config } from 'dotenv'
+import { env } from 'node:process'
 
 // Load from .env
 config()
@@ -7,7 +8,7 @@ function _string(name: string, required?: false): string | undefined
 function _string(name: string, required: true): string
 function _string(name: string, required: boolean): string | undefined
 function _string(name: string, required = false): string | undefined {
-  const value = process.env[name]
+  const value = env[name]
   if (value === undefined) {
     if (required) throw new Error(`Missing environment variable \`${name}\``)
     return undefined
@@ -22,7 +23,7 @@ const falseValues = new Set(['false', 'f', '0', 'no', 'n'])
 function bool(name: string, required?: false): boolean | undefined
 function bool(name: string, required: true): boolean
 function bool(name: string, required = false): boolean | undefined {
-  const value = process.env[name]
+  const value = env[name]
   if (value === undefined) {
     if (required) throw new Error(`Missing environment variable \`${name}\``)
     return undefined
@@ -43,7 +44,7 @@ function bool(name: string, required = false): boolean | undefined {
 function int(name: string, required?: false): number | undefined
 function int(name: string, required: true): number
 function int(name: string, required = false): number | undefined {
-  const value = process.env[name]
+  const value = env[name]
   if (value === undefined) {
     if (required) throw new Error(`Missing environment variable \`${name}\``)
     return undefined

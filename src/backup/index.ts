@@ -1,6 +1,7 @@
 import { field } from '@lolpants/jogger'
 import type { Guild } from 'discord.js'
 import JSZip from 'jszip'
+import { Buffer } from 'node:buffer'
 import { channelContent } from '~backup/channelContent.js'
 import { resolveChannelTree } from '~backup/channelTree.js'
 import { downloadGuildEmoji } from '~backup/emojis.js'

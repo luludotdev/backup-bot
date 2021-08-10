@@ -1,36 +1,44 @@
-import type { Guild, GuildMember, VoiceChannel } from 'discord.js'
+import type {
+  Guild,
+  GuildFeatures,
+  GuildMember,
+  VoiceChannel,
+} from 'discord.js'
 
 export const resolveGuildInfo: (guild: Guild) => Promise<GuildBackup> =
-  async guild => ({
-    id: guild.id,
-    name: guild.name,
-    description: guild.description,
-    createdAt: guild.createdTimestamp,
+  async guild => {
+    const owner = await guild.fetchOwner()
 
-    memberCount: guild.memberCount,
-    owner: guild.owner
-      ? {
-          id: guild.owner.id,
-          tag: guild.owner.user.tag,
-        }
-      : null,
+    return {
+      id: guild.id,
+      name: guild.name,
+      description: guild.description,
+      createdAt: guild.createdTimestamp,
 
-    contentFilter: guild.explicitContentFilter,
-    mfaLevel: guild.mfaLevel,
-    verificationLevel: guild.verificationLevel,
+      memberCount: guild.memberCount,
+      owner: {
+        id: owner.id,
+        tag: owner.user.tag,
+      },
 
-    defaultMessageNotifications: guild.defaultMessageNotifications,
-    region: guild.region,
-    vanityInvite: guild.vanityURLCode,
+      contentFilter: guild.explicitContentFilter,
+      mfaLevel: guild.mfaLevel,
+      verificationLevel: guild.verificationLevel,
 
-    afkTimeout: guild.afkTimeout ?? null,
-    afkChannel: guild.afkChannel
-      ? {
-          id: guild.afkChannel.id,
-          name: guild.afkChannel.name,
-        }
-      : null,
-  })
+      defaultMessageNotifications: guild.defaultMessageNotifications,
+      vanityInvite: guild.vanityURLCode,
+
+      features: guild.features,
+
+      afkTimeout: guild.afkTimeout ?? null,
+      afkChannel: guild.afkChannel
+        ? {
+            id: guild.afkChannel.id,
+            name: guild.afkChannel.name,
+          }
+        : null,
+    }
+  }
 
 interface GuildBackup {
   id: Guild['id']
@@ -42,15 +50,16 @@ interface GuildBackup {
   owner: {
     id: GuildMember['id']
     tag: GuildMember['user']['tag']
-  } | null
+  }
 
   contentFilter: Guild['explicitContentFilter']
   mfaLevel: Guild['mfaLevel']
   verificationLevel: Guild['verificationLevel']
 
   defaultMessageNotifications: Guild['defaultMessageNotifications']
-  region: Guild['region']
   vanityInvite: Guild['vanityURLCode']
+
+  features: GuildFeatures[]
 
   afkTimeout: Guild['afkTimeout'] | null
   afkChannel: {

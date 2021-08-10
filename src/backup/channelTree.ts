@@ -22,12 +22,12 @@ export const resolveChannelTree: (
     },
   ]
 
-  const channels = [...guild.channels.cache.values()].sort(
-    (a, b) => a.position - b.position
-  )
+  const channels = [...guild.channels.cache.values()]
+    .filter((channel): channel is GuildChannel => !channel.isThread())
+    .sort((a, b) => a.position - b.position)
 
   /* eslint-disable no-await-in-loop */
-  for (const channel of channels.filter(x => x.type === 'category')) {
+  for (const channel of channels.filter(x => x.type === 'GUILD_CATEGORY')) {
     tree.push({
       id: channel.id,
       name: channel.name,
@@ -39,12 +39,12 @@ export const resolveChannelTree: (
 
   type NotCategory = TextChannel | StoreChannel | NewsChannel | VoiceChannel
   const notCategories = channels.filter(
-    (channel): channel is NotCategory => channel.type !== 'category'
+    (channel): channel is NotCategory => channel.type !== 'GUILD_CATEGORY'
   )
 
   /* eslint-disable no-await-in-loop */
   for (const channel of notCategories) {
-    const parentID = channel.parentID ?? rootID
+    const parentID = channel.parentId ?? rootID
     const parent = tree.find(x => x.id === parentID)
     if (!parent) {
       throw new Error(
@@ -86,11 +86,11 @@ export const resolveChannelTree: (
 const mapPermissions: (
   overrides: GuildChannel['permissionOverwrites']
 ) => Promise<PermissionOverwriteBackup[] | null> = async overrides => {
-  if (overrides.size === 0) return null
+  if (overrides.cache.size === 0) return null
 
   /* eslint-disable no-await-in-loop */
   const array: PermissionOverwriteBackup[] = []
-  for (const override of overrides.values()) {
+  for (const override of overrides.cache.values()) {
     const { id, type } = override
     const allow = override.allow.toArray()
     const deny = override.deny.toArray()

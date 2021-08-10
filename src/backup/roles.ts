@@ -3,13 +3,10 @@ import { MAX_ROLE_MEMBERS } from '~env/index.js'
 
 export const resolveRoleList: (guild: Guild) => Promise<readonly RoleBackup[]> =
   async guild => {
-    const roles = await guild.roles.fetch(undefined, true, true)
+    const roles = await guild.roles.fetch(undefined, { force: true })
     const array: RoleBackup[] = []
 
-    const sorted = [...roles.cache.values()].sort(
-      (a, b) => b.position - a.position
-    )
-
+    const sorted = [...roles.values()].sort((a, b) => b.position - a.position)
     for (const role of sorted) {
       const resolveMembers = () => {
         if (role.id === guild.id) return null

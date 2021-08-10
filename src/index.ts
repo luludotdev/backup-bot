@@ -2,16 +2,20 @@ import 'source-map-support/register.js'
 
 import { field } from '@lolpants/jogger'
 import dateformat from 'dateformat'
-import { Client } from 'discord.js'
+import { Client, Intents } from 'discord.js'
 import mkdirp from 'mkdirp'
 import { writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
+import process from 'node:process'
 import { backupGuild } from '~backup/index.js'
 import { BACKUPS_DIR, GUILD_ID, TOKEN } from '~env/index.js'
 import { errorField, flush, logger } from '~logger.js'
 import { exitHook } from './exit.js'
 
-const client = new Client()
+const client = new Client({
+  intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
+})
+
 client.on('ready', async () => {
   logger.info(
     field('action', 'ready'),
@@ -20,7 +24,7 @@ client.on('ready', async () => {
 
   const resolveGuild = async () => {
     try {
-      const guild = await client.guilds.fetch(GUILD_ID, true, true)
+      const guild = await client.guilds.fetch({ guild: GUILD_ID, force: true })
       logger.info(
         field('event', 'resolve-guild'),
         field('guild-id', guild.id),

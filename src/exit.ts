@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 type AsyncExitHook = () => void
 type ExitHook = (exit: AsyncExitHook, error?: Error) => void | Promise<void>
 
