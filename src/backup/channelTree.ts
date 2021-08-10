@@ -113,7 +113,7 @@ const mapPermissions: (
         override.id
       )
 
-      const tag = guildMember.user.tag
+      const { tag } = guildMember.user
       const member: MemberPermissionOverwrite = {
         id,
         type,
